@@ -2,10 +2,15 @@ package service;
 
 import entities.Tarefa;
 import enums.Situacao;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Named;
 import repository.TarefaRepository;
 
 import java.util.List;
 
+
+@Named
+@ApplicationScoped
 public class TarefaServiceImpl implements TarefaService {
 
     private final TarefaRepository tarefaRepository = new TarefaRepository();

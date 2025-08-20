@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core">
+
+<h:head>
+    <title>Sistema de Gestão de Tarefas</title>
+</h:head>
+
+<h:body>
+
+    <h:messages/>
+
+
+    <h:form>
+        <h2>Em andamento</h2>
+
+        <h:dataTable value="#{tarefaController.tarefas}" var="t">
+            <h:column>
+                <f:facet name="header">Título</f:facet>
+                #{t.titulo}
+            </h:column>
+
+            <h:column>
+                <f:facet name="header">Responsável</f:facet>
+                #{t.responsavel}
+            </h:column>
+
+            <h:column>
+                <f:facet name="header">Prioridade</f:facet>
+                #{t.prioridade}
+            </h:column>
+
+            <h:column>
+                <f:facet name="header">Deadline</f:facet>
+                #{t.deadline}
+            </h:column>
+
+            <h:column>
+                <f:facet name="header">Ações</f:facet>
+                <h:commandLink value="Editar"    action="#{tarefaController.editar(t)}" />
+                |
+                <h:commandLink value="Concluir"  action="#{tarefaController.concluir(t)}"
+                               rendered="#{t.situacao ne 'CONCLUIDA'}" />
+                |
+                <h:commandLink value="Remover"   action="#{tarefaController.remover(t.id)}"
+                               onclick="return confirm('Remover esta tarefa?');" />
+            </h:column>
+        </h:dataTable>
+    </h:form>
+
+    <h:form>
+        <h3>Nova/Editar Tarefa</h3>
+
+        <h:panelGrid columns="2" columnClasses="label,value">
+            <h:outputLabel value="Título:" for="titulo"/>
+            <h:inputText id="titulo" value="#{tarefaController.tarefaEdicao.titulo}" required="true"/>
+
+            <h:outputLabel value="Descrição:" for="desc"/>
+            <h:inputTextarea id="desc" value="#{tarefaController.tarefaEdicao.descricao}" rows="3"/>
+
+            <h:outputLabel value="Responsável:" for="resp"/>
+            <h:inputText id="resp" value="#{tarefaController.tarefaEdicao.responsavel}" required="true"/>
+
+            <h:outputLabel value="Prioridade:" for="prio"/>
+            <h:selectOneMenu id="prio" value="#{tarefaController.tarefaEdicao.prioridade}" required="true">
+                <f:selectItem itemLabel="Selecione" itemValue="#{null}"/>
+                <f:selectItem itemLabel="ALTA"  itemValue="ALTA"/>
+                <f:selectItem itemLabel="MEDIA" itemValue="MEDIA"/>
+                <f:selectItem itemLabel="BAIXA" itemValue="BAIXA"/>
+            </h:selectOneMenu>
+
+            <h:outputLabel value="Deadline (yyyy-MM-dd):" for="dl"/>
+            <h:inputText id="dl" value="#{tarefaController.tarefaEdicao.deadline}" required="true">
+                <f:convertDateTime type="localDate" pattern="yyyy-MM-dd"/>
+            </h:inputText>
+        </h:panelGrid>
+
+        <h:commandButton value="Salvar"   action="#{tarefaController.salvar}"/>
+        <h:commandButton value="Cancelar" action="#{tarefaController.cancelar}" immediate="true"/>
+    </h:form>
+
+</h:body>
+</html>
