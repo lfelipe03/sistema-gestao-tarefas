@@ -21,7 +21,7 @@ public class Tarefa {
     @Enumerated(EnumType.STRING)
     private Prioridade prioridade;
 
-    private LocalDate deadline;
+    private String deadline;
 
     @Enumerated(EnumType.STRING)
     private Situacao situacao;
@@ -30,7 +30,7 @@ public class Tarefa {
 
     }
 
-    public Tarefa(String titulo, String descricao, String responsavel, Prioridade prioridade, LocalDate deadline, Situacao situacao) {
+    public Tarefa(String titulo, String descricao, String responsavel, Prioridade prioridade, String deadline, Situacao situacao) {
         this.titulo = titulo;
         this.descricao = descricao;
         this.responsavel = responsavel;
@@ -79,11 +79,11 @@ public class Tarefa {
         this.prioridade = prioridade;
     }
 
-    public LocalDate getDeadline() {
+    public String getDeadline() {
         return deadline;
     }
 
-    public void setDeadline(LocalDate deadline) {
+    public void setDeadline(String deadline) {
         this.deadline = deadline;
     }
 

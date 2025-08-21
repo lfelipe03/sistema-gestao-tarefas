@@ -9,13 +9,49 @@
 
 <h:body>
 
-    <h:messages/>
+    <!-- ===================== FORMULÁRIO DE CADASTRO / EDIÇÃO ===================== -->
+    <h:form id="cadastroForm">
+        <h2>Cadastrar / Editar Tarefa</h2>
 
+        <h:panelGrid columns="2" columnClasses="label,value" cellpadding="4">
 
-    <h:form>
-        <h2>Em andamento</h2>
+            <h:outputLabel for="titulo" value="Título:"/>
+            <h:inputText id="titulo"
+                         value="#{tarefaController.tarefaEdicao.titulo}" required="true"/>
 
-        <h:dataTable value="#{tarefaController.tarefas}" var="t">
+            <h:outputLabel for="descricao" value="Descrição:"/>
+            <h:inputTextarea id="descricao"
+                             value="#{tarefaController.tarefaEdicao.descricao}" rows="3"/>
+
+            <h:outputLabel for="responsavel" value="Responsável:"/>
+            <h:inputText id="responsavel"
+                         value="#{tarefaController.tarefaEdicao.responsavel}" required="true"/>
+
+            <h:outputLabel for="prioridade" value="Prioridade:"/>
+            <h:selectOneMenu id="prioridade"
+                             value="#{tarefaController.tarefaEdicao.prioridade}" required="true">
+                <f:selectItem itemLabel="Selecione..." itemValue="#{null}"/>
+                <f:selectItem itemLabel="BAIXA" itemValue="BAIXA"/>
+                <f:selectItem itemLabel="MEDIA" itemValue="MEDIA"/>
+                <f:selectItem itemLabel="ALTA"  itemValue="ALTA"/>
+            </h:selectOneMenu>
+
+            <h:outputLabel for="deadline" value="Deadline:"/>
+            <h:inputText id="deadline"
+                         value="#{tarefaController.tarefaEdicao.deadline}" required="true"/>
+        </h:panelGrid>
+
+        <h:commandButton value="Salvar" action="#{tarefaController.salvar}"/>
+        <h:commandButton value="Limpar" action="#{tarefaController.cancelar}" immediate="true"/>
+        <h:messages style="color:red; margin-top:10px"/>
+    </h:form>
+
+    <!-- ===================== LISTAGEM DE TAREFAS ===================== -->
+    <h2>Lista de Tarefas</h2>
+
+    <h:form id="listaForm">
+        <h:dataTable value="#{tarefaController.tarefas}" var="t" border="1" cellpadding="5">
+
             <h:column>
                 <f:facet name="header">Título</f:facet>
                 #{t.titulo}
@@ -37,47 +73,28 @@
             </h:column>
 
             <h:column>
-                <f:facet name="header">Ações</f:facet>
-                <h:commandLink value="Editar"    action="#{tarefaController.editar(t)}" />
-                |
-                <h:commandLink value="Concluir"  action="#{tarefaController.concluir(t)}"
-                               rendered="#{t.situacao ne 'CONCLUIDA'}" />
-                |
-                <h:commandLink value="Remover"   action="#{tarefaController.remover(t.id)}"
-                               onclick="return confirm('Remover esta tarefa?');" />
+                <f:facet name="header">Situação</f:facet>
+                #{t.situacao}
             </h:column>
+
+            <h:column>
+                <f:facet name="header">Ações</f:facet>
+
+                <!-- EDITAR -->
+                <h:commandLink value="Editar" action="#{tarefaController.editar(t)}"/>
+
+                <!-- CONCLUIR -->
+                <h:outputText value=" | " />
+                <h:commandLink value="Concluir" action="#{tarefaController.concluir(t)}"
+                               rendered="#{t.situacao ne 'CONCLUIDA'}"/>
+
+                <!-- REMOVER -->
+                <h:outputText value=" | " />
+                <h:commandLink value="Remover" action="#{tarefaController.remover(t.id)}"
+                               onclick="return confirm('Tem certeza que deseja remover esta tarefa?');"/>
+            </h:column>
+
         </h:dataTable>
-    </h:form>
-
-    <h:form>
-        <h3>Nova/Editar Tarefa</h3>
-
-        <h:panelGrid columns="2" columnClasses="label,value">
-            <h:outputLabel value="Título:" for="titulo"/>
-            <h:inputText id="titulo" value="#{tarefaController.tarefaEdicao.titulo}" required="true"/>
-
-            <h:outputLabel value="Descrição:" for="desc"/>
-            <h:inputTextarea id="desc" value="#{tarefaController.tarefaEdicao.descricao}" rows="3"/>
-
-            <h:outputLabel value="Responsável:" for="resp"/>
-            <h:inputText id="resp" value="#{tarefaController.tarefaEdicao.responsavel}" required="true"/>
-
-            <h:outputLabel value="Prioridade:" for="prio"/>
-            <h:selectOneMenu id="prio" value="#{tarefaController.tarefaEdicao.prioridade}" required="true">
-                <f:selectItem itemLabel="Selecione" itemValue="#{null}"/>
-                <f:selectItem itemLabel="ALTA"  itemValue="ALTA"/>
-                <f:selectItem itemLabel="MEDIA" itemValue="MEDIA"/>
-                <f:selectItem itemLabel="BAIXA" itemValue="BAIXA"/>
-            </h:selectOneMenu>
-
-            <h:outputLabel value="Deadline (yyyy-MM-dd):" for="dl"/>
-            <h:inputText id="dl" value="#{tarefaController.tarefaEdicao.deadline}" required="true">
-                <f:convertDateTime type="localDate" pattern="yyyy-MM-dd"/>
-            </h:inputText>
-        </h:panelGrid>
-
-        <h:commandButton value="Salvar"   action="#{tarefaController.salvar}"/>
-        <h:commandButton value="Cancelar" action="#{tarefaController.cancelar}" immediate="true"/>
     </h:form>
 
 </h:body>
