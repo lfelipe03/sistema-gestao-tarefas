@@ -1,7 +1,7 @@
 package controller;
 
 import entities.Tarefa;
-import enums.Status;
+import enums.Status; // <<< trocado
 import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
@@ -24,43 +24,67 @@ public class TarefaController implements Serializable {
     private List<Tarefa> tarefas;
     private Tarefa tarefaEdicao;
 
+    private Long filtroNumero;
+    private String filtroTituloDescricao;
+    private String filtroResponsavel;
+    private Status filtroStatus;
+
     @PostConstruct
     public void init() {
-        carregarLista();
+        filtroStatus = Status.EM_ANDAMENTO;
+        buscar();
         novo();
     }
 
     public void carregarLista() {
-        tarefas = tarefaService.listarTodos().stream()
-                .filter(t -> t.getSituacao() != Status.CONCLUIDA)
+        tarefas = tarefaService.listarTodos();
+    }
+
+    public void buscar() {
+        List<Tarefa> base = tarefaService.listarTodos();
+
+        tarefas = base.stream()
+                .filter(t -> filtroNumero == null || (t.getId() != null && t.getId().equals(filtroNumero)))
+                .filter(t -> isBlank(filtroTituloDescricao) ||
+                        containsIgnoreCase(t.getTitulo(), filtroTituloDescricao) ||
+                        containsIgnoreCase(t.getDescricao(), filtroTituloDescricao))
+                .filter(t -> isBlank(filtroResponsavel) || containsIgnoreCase(t.getResponsavel(), filtroResponsavel))
+                .filter(t -> filtroStatus == null || t.getStatus() == filtroStatus)
                 .collect(Collectors.toList());
+    }
+
+    public void limparFiltros() {
+        filtroNumero = null;
+        filtroTituloDescricao = null;
+        filtroResponsavel = null;
+        filtroStatus = null;
+        buscar();
     }
 
     public void novo() {
         tarefaEdicao = new Tarefa();
-        tarefaEdicao.setSituacao(Status.EM_ANDAMENTO);
+        tarefaEdicao.setStatus(Status.EM_ANDAMENTO);
     }
 
     public void editar(Tarefa t) {
         Tarefa copiaTarefa = new Tarefa();
-
         copiaTarefa.setId(t.getId());
         copiaTarefa.setTitulo(t.getTitulo());
         copiaTarefa.setDescricao(t.getDescricao());
         copiaTarefa.setResponsavel(t.getResponsavel());
         copiaTarefa.setPrioridade(t.getPrioridade());
         copiaTarefa.setDeadline(t.getDeadline());
-        copiaTarefa.setSituacao(t.getSituacao());
+        copiaTarefa.setStatus(t.getStatus());
         tarefaEdicao = copiaTarefa;
     }
 
     public void salvar() {
-        if(tarefaEdicao.getId() == null) {
+        if (tarefaEdicao.getId() == null) {
             tarefaService.criar(tarefaEdicao);
         } else {
             tarefaService.atualizar(tarefaEdicao);
         }
-        carregarLista();
+        buscar();
         novo();
     }
 
@@ -68,30 +92,42 @@ public class TarefaController implements Serializable {
         novo();
     }
 
-    public void remover(Long id){
-        if(id != null) {
+    public void remover(Long id) {
+        if (id != null) {
             tarefaService.remover(id);
-            carregarLista();
+            buscar();
         }
     }
 
     public void concluir(Tarefa t) {
-        if(t != null && t.getSituacao() != Status.CONCLUIDA) {
-            t.setSituacao(Status.CONCLUIDA);
+        if (t != null && t.getStatus() != Status.CONCLUIDA) {
+            t.setStatus(Status.CONCLUIDA);
             tarefaService.atualizar(t);
-            carregarLista();
+            buscar();
         }
-
     }
 
+    private static boolean isBlank(String s) {
+        return s == null || s.isBlank();
+    }
+    private static boolean containsIgnoreCase(String a, String b) {
+        return a != null && b != null && a.toLowerCase().contains(b.toLowerCase());
+    }
 
-    public List<Tarefa> getTarefas() {
-        return tarefas;
-    }
-    public Tarefa getTarefaEdicao() {
-        return tarefaEdicao;
-    }
-    public void setTarefaEdicao(Tarefa tarefaEdicao) {
-        this.tarefaEdicao = tarefaEdicao;
-    }
+
+    public List<Tarefa> getTarefas() { return tarefas; }
+    public Tarefa getTarefaEdicao() { return tarefaEdicao; }
+    public void setTarefaEdicao(Tarefa tarefaEdicao) { this.tarefaEdicao = tarefaEdicao; }
+
+    public Long getFiltroNumero() { return filtroNumero; }
+    public void setFiltroNumero(Long filtroNumero) { this.filtroNumero = filtroNumero; }
+
+    public String getFiltroTituloDescricao() { return filtroTituloDescricao; }
+    public void setFiltroTituloDescricao(String filtroTituloDescricao) { this.filtroTituloDescricao = filtroTituloDescricao; }
+
+    public String getFiltroResponsavel() { return filtroResponsavel; }
+    public void setFiltroResponsavel(String filtroResponsavel) { this.filtroResponsavel = filtroResponsavel; }
+
+    public Status getFiltroStatus() { return filtroStatus; } // <<< trocado
+    public void setFiltroStatus(Status filtroStatus) { this.filtroStatus = filtroStatus; } // <<< trocado
 }

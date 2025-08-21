@@ -15,40 +15,89 @@
         <h:panelGrid columns="2" columnClasses="label,value" cellpadding="4">
 
             <h:outputLabel for="titulo" value="Título:"/>
-            <h:inputText id="titulo"
-                         value="#{tarefaController.tarefaEdicao.titulo}" required="true"/>
+            <h:panelGroup>
+                <h:inputText id="titulo" label="Título"
+                             value="#{tarefaController.tarefaEdicao.titulo}"
+                             required="true"
+                             requiredMessage="O título é obrigatório."/>
+                <h:message for="titulo" style="color:red"/>
+            </h:panelGroup>
 
             <h:outputLabel for="descricao" value="Descrição:"/>
-            <h:inputTextarea id="descricao"
-                             value="#{tarefaController.tarefaEdicao.descricao}" rows="3"/>
+            <h:panelGroup>
+                <h:inputTextarea id="descricao" label="Descrição"
+                                 value="#{tarefaController.tarefaEdicao.descricao}" rows="3"/>
+                <h:message for="descricao" style="color:red"/>
+            </h:panelGroup>
 
             <h:outputLabel for="responsavel" value="Responsável:"/>
-            <h:inputText id="responsavel"
-                         value="#{tarefaController.tarefaEdicao.responsavel}" required="true"/>
+            <h:panelGroup>
+                <h:inputText id="responsavel" label="Responsável"
+                             value="#{tarefaController.tarefaEdicao.responsavel}"
+                             required="true"
+                             requiredMessage="O responsável é obrigatório."/>
+                <h:message for="responsavel" style="color:red"/>
+            </h:panelGroup>
 
             <h:outputLabel for="prioridade" value="Prioridade:"/>
-            <h:selectOneMenu id="prioridade"
-                             value="#{tarefaController.tarefaEdicao.prioridade}" required="true">
-                <f:selectItem itemLabel="Selecione..." itemValue="#{null}"/>
-                <f:selectItem itemLabel="BAIXA" itemValue="BAIXA"/>
-                <f:selectItem itemLabel="MEDIA" itemValue="MEDIA"/>
-                <f:selectItem itemLabel="ALTA"  itemValue="ALTA"/>
-            </h:selectOneMenu>
+            <h:panelGroup>
+                <h:selectOneMenu id="prioridade" label="Prioridade"
+                                 value="#{tarefaController.tarefaEdicao.prioridade}"
+                                 required="true"
+                                 requiredMessage="A prioridade é obrigatória.">
+                    <f:selectItem itemLabel="Selecione..." itemValue="#{null}"/>
+                    <f:selectItem itemLabel="BAIXA" itemValue="BAIXA"/>
+                    <f:selectItem itemLabel="MÉDIA" itemValue="MEDIA"/>
+                    <f:selectItem itemLabel="ALTA"  itemValue="ALTA"/>
+                </h:selectOneMenu>
+                <h:message for="prioridade" style="color:red"/>
+            </h:panelGroup>
 
             <h:outputLabel for="deadline" value="Deadline:"/>
-            <h:inputText id="deadline"
-                         value="#{tarefaController.tarefaEdicao.deadline}" required="true"/>
+            <h:panelGroup>
+                <h:inputText id="deadline" label="Deadline"
+                             value="#{tarefaController.tarefaEdicao.deadline}"
+                             required="true"
+                             requiredMessage="O deadline é obrigatório."/>
+                <h:message for="deadline" style="color:red"/>
+            </h:panelGroup>
+
         </h:panelGrid>
 
         <h:commandButton value="Salvar" action="#{tarefaController.salvar}"/>
         <h:commandButton value="Limpar" action="#{tarefaController.cancelar}" immediate="true"/>
-        <h:messages style="color:red; margin-top:10px"/>
-    </h:form>
 
+        <h:messages globalOnly="true" style="color:red; margin-top:10px"/>
+    </h:form>
 
     <h2>Lista de Tarefas</h2>
 
     <h:form id="listaForm">
+
+        <h:panelGrid columns="6" columnClasses="label,value,label,value,label,value" cellpadding="4">
+
+            <h:outputLabel for="fnumero" value="Número:"/>
+            <h:inputText id="fnumero" value="#{tarefaController.filtroNumero}">
+                <f:convertNumber integerOnly="true"/>
+            </h:inputText>
+
+            <h:outputLabel for="ftitulo" value="Título/Descrição:"/>
+            <h:inputText id="ftitulo" value="#{tarefaController.filtroTituloDescricao}"/>
+
+            <h:outputLabel for="fresp" value="Responsável:"/>
+            <h:inputText id="fresp" value="#{tarefaController.filtroResponsavel}"/>
+
+            <h:outputLabel for="fstatus" value="Status:"/>
+            <h:selectOneMenu id="fstatus" value="#{tarefaController.filtroStatus}">
+                <f:selectItem itemLabel="Todos" itemValue="#{null}"/>
+                <f:selectItem itemLabel="Em andamento" itemValue="EM_ANDAMENTO"/>
+                <f:selectItem itemLabel="Concluída" itemValue="CONCLUIDA"/>
+            </h:selectOneMenu>
+
+            <h:commandButton value="Buscar Tarefas" action="#{tarefaController.buscar}"/>
+            <h:commandButton value="Limpar filtros" action="#{tarefaController.limparFiltros}" immediate="true"/>
+        </h:panelGrid>
+
         <h:dataTable value="#{tarefaController.tarefas}" var="t" border="1" cellpadding="5">
 
             <h:column>
@@ -71,7 +120,7 @@
                 <h:commandLink value="Editar" action="#{tarefaController.editar(t)}"/>
                 <h:outputText value=" | " />
                 <h:commandLink value="Concluir" action="#{tarefaController.concluir(t)}"
-                               rendered="#{t.situacao ne 'CONCLUIDA'}"/>
+                               rendered="#{t.status ne 'CONCLUIDA'}"/>
                 <h:outputText value=" | " />
                 <h:commandLink value="Remover" action="#{tarefaController.remover(t.id)}"
                                onclick="return confirm('Tem certeza que deseja remover esta tarefa?');"/>

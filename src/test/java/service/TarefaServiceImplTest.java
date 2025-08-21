@@ -40,12 +40,12 @@ class TarefaServiceImplTest {
     @Test
     void criar_DefinirSituacaoEmAndamentoQuandoNula_eSalvar() {
         Tarefa t = tarefaValida();
-        t.setSituacao(null);
+        t.setStatus(null);
 
         Tarefa r = service.criar(t);
 
         assertNotNull(r);
-        assertEquals(Status.EM_ANDAMENTO, r.getSituacao());
+        assertEquals(Status.EM_ANDAMENTO, r.getStatus());
         verify(tarefaRepository).salvar(t);
         verifyNoMoreInteractions(tarefaRepository);
     }

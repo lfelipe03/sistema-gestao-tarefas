@@ -29,7 +29,7 @@ class TarefaControllerTest {
         t.setTitulo("Estudar");
         t.setDescricao("Revisar conteúdo");
         t.setResponsavel("Luiz");
-        t.setSituacao(Status.EM_ANDAMENTO);
+        t.setStatus(Status.EM_ANDAMENTO);
         return t;
     }
 
@@ -41,7 +41,7 @@ class TarefaControllerTest {
 
         assertNotNull(controller.getTarefas());
         assertNotNull(controller.getTarefaEdicao());
-        assertEquals(Status.EM_ANDAMENTO, controller.getTarefaEdicao().getSituacao());
+        assertEquals(Status.EM_ANDAMENTO, controller.getTarefaEdicao().getStatus());
         verify(tarefaService, times(1)).listarTodos();
         verifyNoMoreInteractions(tarefaService);
     }
@@ -97,11 +97,11 @@ class TarefaControllerTest {
         when(tarefaService.listarTodos()).thenReturn(Collections.emptyList());
 
         Tarefa t = tarefaValida();
-        t.setSituacao(Status.EM_ANDAMENTO);
+        t.setStatus(Status.EM_ANDAMENTO);
 
         controller.concluir(t);
 
-        assertEquals(Status.CONCLUIDA, t.getSituacao());
+        assertEquals(Status.CONCLUIDA, t.getStatus());
         verify(tarefaService).atualizar(t);
         verify(tarefaService).listarTodos();
         verifyNoMoreInteractions(tarefaService);
@@ -110,7 +110,7 @@ class TarefaControllerTest {
     @Test
     void concluirNaoFazNadaSeTarefaJaConcluida() {
         Tarefa t = tarefaValida();
-        t.setSituacao(Status.CONCLUIDA);
+        t.setStatus(Status.CONCLUIDA);
 
         controller.concluir(t);
 

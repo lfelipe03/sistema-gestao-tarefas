@@ -12,4 +12,6 @@ public interface TarefaService {
     Tarefa buscarPorId(Long id);
     List<Tarefa> listarTodos();
 
+
+
 }

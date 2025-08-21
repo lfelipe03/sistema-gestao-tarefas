@@ -85,11 +85,11 @@ public class Tarefa {
         this.deadline = deadline;
     }
 
-    public Status getSituacao() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setSituacao(Status status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 }
