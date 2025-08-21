@@ -2,7 +2,7 @@ package service;
 
 import entities.Tarefa;
 import enums.Prioridade;
-import enums.Situacao;
+import enums.Status;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -45,7 +45,7 @@ class TarefaServiceImplTest {
         Tarefa r = service.criar(t);
 
         assertNotNull(r);
-        assertEquals(Situacao.EM_ANDAMENTO, r.getSituacao());
+        assertEquals(Status.EM_ANDAMENTO, r.getSituacao());
         verify(tarefaRepository).salvar(t);
         verifyNoMoreInteractions(tarefaRepository);
     }

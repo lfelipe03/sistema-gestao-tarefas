@@ -1,7 +1,7 @@
 package controller;
 
 import entities.Tarefa;
-import enums.Situacao;
+import enums.Status;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -29,7 +29,7 @@ class TarefaControllerTest {
         t.setTitulo("Estudar");
         t.setDescricao("Revisar conteúdo");
         t.setResponsavel("Luiz");
-        t.setSituacao(Situacao.EM_ANDAMENTO);
+        t.setSituacao(Status.EM_ANDAMENTO);
         return t;
     }
 
@@ -41,7 +41,7 @@ class TarefaControllerTest {
 
         assertNotNull(controller.getTarefas());
         assertNotNull(controller.getTarefaEdicao());
-        assertEquals(Situacao.EM_ANDAMENTO, controller.getTarefaEdicao().getSituacao());
+        assertEquals(Status.EM_ANDAMENTO, controller.getTarefaEdicao().getSituacao());
         verify(tarefaService, times(1)).listarTodos();
         verifyNoMoreInteractions(tarefaService);
     }
@@ -97,11 +97,11 @@ class TarefaControllerTest {
         when(tarefaService.listarTodos()).thenReturn(Collections.emptyList());
 
         Tarefa t = tarefaValida();
-        t.setSituacao(Situacao.EM_ANDAMENTO);
+        t.setSituacao(Status.EM_ANDAMENTO);
 
         controller.concluir(t);
 
-        assertEquals(Situacao.CONCLUIDA, t.getSituacao());
+        assertEquals(Status.CONCLUIDA, t.getSituacao());
         verify(tarefaService).atualizar(t);
         verify(tarefaService).listarTodos();
         verifyNoMoreInteractions(tarefaService);
@@ -110,7 +110,7 @@ class TarefaControllerTest {
     @Test
     void concluirNaoFazNadaSeTarefaJaConcluida() {
         Tarefa t = tarefaValida();
-        t.setSituacao(Situacao.CONCLUIDA);
+        t.setSituacao(Status.CONCLUIDA);
 
         controller.concluir(t);
 

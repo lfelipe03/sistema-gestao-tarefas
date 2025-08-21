@@ -1,10 +1,8 @@
 package entities;
 
 import enums.Prioridade;
-import enums.Situacao;
+import enums.Status;
 import jakarta.persistence.*;
-
-import java.time.LocalDate;
 
 @Entity
 @Table(name = "tarefas")
@@ -24,19 +22,19 @@ public class Tarefa {
     private String deadline;
 
     @Enumerated(EnumType.STRING)
-    private Situacao situacao;
+    private Status status;
 
     public Tarefa() {
 
     }
 
-    public Tarefa(String titulo, String descricao, String responsavel, Prioridade prioridade, String deadline, Situacao situacao) {
+    public Tarefa(String titulo, String descricao, String responsavel, Prioridade prioridade, String deadline, Status status) {
         this.titulo = titulo;
         this.descricao = descricao;
         this.responsavel = responsavel;
         this.prioridade = prioridade;
         this.deadline = deadline;
-        this.situacao = situacao;
+        this.status = status;
     }
 
     public Long getId() {
@@ -87,11 +85,11 @@ public class Tarefa {
         this.deadline = deadline;
     }
 
-    public Situacao getSituacao() {
-        return situacao;
+    public Status getSituacao() {
+        return status;
     }
 
-    public void setSituacao(Situacao situacao) {
-        this.situacao = situacao;
+    public void setSituacao(Status status) {
+        this.status = status;
     }
 }

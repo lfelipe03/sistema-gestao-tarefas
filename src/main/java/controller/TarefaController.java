@@ -1,13 +1,12 @@
 package controller;
 
 import entities.Tarefa;
-import enums.Situacao;
+import enums.Status;
 import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.faces.view.ViewScoped;
 import service.TarefaService;
-import service.TarefaServiceImpl;
 
 import java.io.Serializable;
 import java.util.List;
@@ -33,13 +32,13 @@ public class TarefaController implements Serializable {
 
     public void carregarLista() {
         tarefas = tarefaService.listarTodos().stream()
-                .filter(t -> t.getSituacao() != Situacao.CONCLUIDA)
+                .filter(t -> t.getSituacao() != Status.CONCLUIDA)
                 .collect(Collectors.toList());
     }
 
     public void novo() {
         tarefaEdicao = new Tarefa();
-        tarefaEdicao.setSituacao(Situacao.EM_ANDAMENTO);
+        tarefaEdicao.setSituacao(Status.EM_ANDAMENTO);
     }
 
     public void editar(Tarefa t) {
@@ -77,8 +76,8 @@ public class TarefaController implements Serializable {
     }
 
     public void concluir(Tarefa t) {
-        if(t != null && t.getSituacao() != Situacao.CONCLUIDA) {
-            t.setSituacao(Situacao.CONCLUIDA);
+        if(t != null && t.getSituacao() != Status.CONCLUIDA) {
+            t.setSituacao(Status.CONCLUIDA);
             tarefaService.atualizar(t);
             carregarLista();
         }

@@ -1,6 +1,6 @@
 package enums;
 
-public enum Situacao {
+public enum Status {
     EM_ANDAMENTO,
     CONCLUIDA
 }

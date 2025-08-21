@@ -1,7 +1,7 @@
 package service;
 
 import entities.Tarefa;
-import enums.Situacao;
+import enums.Status;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Named;
 import repository.TarefaRepository;
@@ -23,7 +23,7 @@ public class TarefaServiceImpl implements TarefaService {
     public Tarefa criar(Tarefa t) {
         validar(t);
         if(t.getSituacao() == null) {
-            t.setSituacao(Situacao.EM_ANDAMENTO);
+            t.setSituacao(Status.EM_ANDAMENTO);
         }
         tarefaRepository.salvar(t);
         return t;
