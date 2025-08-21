@@ -13,7 +13,11 @@ import java.util.List;
 @ApplicationScoped
 public class TarefaServiceImpl implements TarefaService {
 
-    private final TarefaRepository tarefaRepository = new TarefaRepository();
+    private TarefaRepository tarefaRepository = new TarefaRepository();
+
+    public TarefaServiceImpl(TarefaRepository tarefaRepository) {
+        this.tarefaRepository = tarefaRepository;
+    }
 
     @Override
     public Tarefa criar(Tarefa t) {
