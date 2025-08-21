@@ -11,6 +11,7 @@ import service.TarefaServiceImpl;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Named("tarefaController")
 @ViewScoped
@@ -31,7 +32,9 @@ public class TarefaController implements Serializable {
     }
 
     public void carregarLista() {
-        tarefas = tarefaService.listarTodos();
+        tarefas = tarefaService.listarTodos().stream()
+                .filter(t -> t.getSituacao() != Situacao.CONCLUIDA)
+                .collect(Collectors.toList());
     }
 
     public void novo() {

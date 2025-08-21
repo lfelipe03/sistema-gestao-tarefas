@@ -9,7 +9,6 @@
 
 <h:body>
 
-    <!-- ===================== FORMULÁRIO DE CADASTRO / EDIÇÃO ===================== -->
     <h:form id="cadastroForm">
         <h2>Cadastrar / Editar Tarefa</h2>
 
@@ -46,11 +45,16 @@
         <h:messages style="color:red; margin-top:10px"/>
     </h:form>
 
-    <!-- ===================== LISTAGEM DE TAREFAS ===================== -->
+
     <h2>Lista de Tarefas</h2>
 
     <h:form id="listaForm">
         <h:dataTable value="#{tarefaController.tarefas}" var="t" border="1" cellpadding="5">
+
+            <h:column>
+                <f:facet name="header">Número</f:facet>
+                #{t.id}
+            </h:column>
 
             <h:column>
                 <f:facet name="header">Título</f:facet>
@@ -63,32 +67,11 @@
             </h:column>
 
             <h:column>
-                <f:facet name="header">Prioridade</f:facet>
-                #{t.prioridade}
-            </h:column>
-
-            <h:column>
-                <f:facet name="header">Deadline</f:facet>
-                #{t.deadline}
-            </h:column>
-
-            <h:column>
-                <f:facet name="header">Situação</f:facet>
-                #{t.situacao}
-            </h:column>
-
-            <h:column>
                 <f:facet name="header">Ações</f:facet>
-
-                <!-- EDITAR -->
                 <h:commandLink value="Editar" action="#{tarefaController.editar(t)}"/>
-
-                <!-- CONCLUIR -->
                 <h:outputText value=" | " />
                 <h:commandLink value="Concluir" action="#{tarefaController.concluir(t)}"
                                rendered="#{t.situacao ne 'CONCLUIDA'}"/>
-
-                <!-- REMOVER -->
                 <h:outputText value=" | " />
                 <h:commandLink value="Remover" action="#{tarefaController.remover(t.id)}"
                                onclick="return confirm('Tem certeza que deseja remover esta tarefa?');"/>
