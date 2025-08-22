@@ -38,7 +38,7 @@ class TarefaServiceImplTest {
     }
     
     @Test
-    void criar_DefinirSituacaoEmAndamentoQuandoNula_eSalvar() {
+    void criar_DefinirSituacaoEmAndamentoQuandoNulaESalvar() {
         Tarefa t = tarefaValida();
         t.setStatus(null);
 

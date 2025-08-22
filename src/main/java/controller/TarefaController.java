@@ -36,10 +36,6 @@ public class TarefaController implements Serializable {
         novo();
     }
 
-    public void carregarLista() {
-        tarefas = tarefaService.listarTodos();
-    }
-
     public void buscar() {
         List<Tarefa> base = tarefaService.listarTodos();
 
@@ -68,7 +64,6 @@ public class TarefaController implements Serializable {
 
     public void editar(Tarefa t) {
         Tarefa copiaTarefa = new Tarefa();
-        copiaTarefa.setId(t.getId());
         copiaTarefa.setTitulo(t.getTitulo());
         copiaTarefa.setDescricao(t.getDescricao());
         copiaTarefa.setResponsavel(t.getResponsavel());
@@ -128,6 +123,6 @@ public class TarefaController implements Serializable {
     public String getFiltroResponsavel() { return filtroResponsavel; }
     public void setFiltroResponsavel(String filtroResponsavel) { this.filtroResponsavel = filtroResponsavel; }
 
-    public Status getFiltroStatus() { return filtroStatus; } // <<< trocado
-    public void setFiltroStatus(Status filtroStatus) { this.filtroStatus = filtroStatus; } // <<< trocado
+    public Status getFiltroStatus() { return filtroStatus; }
+    public void setFiltroStatus(Status filtroStatus) { this.filtroStatus = filtroStatus; }
 }
