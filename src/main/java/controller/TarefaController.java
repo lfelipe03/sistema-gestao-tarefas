@@ -1,7 +1,7 @@
 package controller;
 
 import entities.Tarefa;
-import enums.Status; // <<< trocado
+import enums.Status;
 import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
