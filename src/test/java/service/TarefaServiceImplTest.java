@@ -38,7 +38,7 @@ class TarefaServiceImplTest {
     }
     
     @Test
-    void criar_DefinirSituacaoEmAndamentoQuandoNulaESalvar() {
+    void criarDefinirSituacaoEmAndamentoQuandoNulaESalvar() {
         Tarefa t = tarefaValida();
         t.setStatus(null);
 
@@ -51,7 +51,7 @@ class TarefaServiceImplTest {
     }
 
     @Test
-    void criar_deveLancarExcecaoQuandoTituloInvalido() {
+    void criarDeveLancarExcecaoQuandoTituloInvalido() {
         Tarefa t = new Tarefa();
         t.setTitulo(" ");
 
@@ -60,7 +60,7 @@ class TarefaServiceImplTest {
     }
 
     @Test
-    void atualizar_deveLancarExcecaoQuandoIdNulo() {
+    void atualizarDeveLancarExcecaoQuandoIdNulo() {
         Tarefa t = tarefaValida();
         t.setId(null);
 
@@ -69,7 +69,7 @@ class TarefaServiceImplTest {
     }
 
     @Test
-    void atualizar_deveValidarEChamarRepository() {
+    void atualizarDeveValidarEChamarRepository() {
         Tarefa t = tarefaValida();
         t.setId(1L);
 
