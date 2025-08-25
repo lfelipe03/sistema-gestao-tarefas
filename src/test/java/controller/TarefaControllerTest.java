@@ -57,7 +57,7 @@ class TarefaControllerTest {
         controller.salvar();
 
         verify(tarefaService).criar(nova);
-        verify(tarefaService).listarTodos(); // chamado em carregarLista()
+        verify(tarefaService).listarTodos();
         verifyNoMoreInteractions(tarefaService);
     }
 
@@ -82,7 +82,7 @@ class TarefaControllerTest {
         controller.remover(1L);
 
         verify(tarefaService).remover(1L);
-        verify(tarefaService).listarTodos(); // por carregarLista()
+        verify(tarefaService).listarTodos();
         verifyNoMoreInteractions(tarefaService);
     }
 
